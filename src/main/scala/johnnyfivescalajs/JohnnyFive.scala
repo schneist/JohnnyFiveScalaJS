@@ -1190,6 +1190,8 @@ object JohnnyFive extends js.Object {
     var freq: js.UndefOr[Double] = js.undefined
   }
 
+  def Thermometer(option: ThermometerOption): Thermometer = js.native
+
   @js.native
   class Thermometer protected() extends js.Object {
     def this(option: ThermometerOption) = this()
@@ -1211,7 +1213,7 @@ object JohnnyFive extends js.Object {
 
     def on(event: String, cb: js.Function0[Unit]): this.type = js.native
 
-    def on(event: String, cb: js.Function1[js.Any, Unit]): this.type = js.native
+    def on(event: String, cb: js.Function1[Thermometer  , Unit]): this.type = js.native
   }
 
 }
