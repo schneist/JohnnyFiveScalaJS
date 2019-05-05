@@ -9,15 +9,14 @@ import scala.scalajs.js.{Date, |}
 @JSImport("johnny-five", JSImport.Namespace)
 object JohnnyFive extends js.Object {
 
-
-  
   trait BoardOption extends js.Object {
     val id: js.UndefOr[Double | String] = js.undefined
     val port: js.UndefOr[String] = js.undefined
     val repl: js.UndefOr[Boolean] = js.undefined
     val debug: js.UndefOr[Boolean] = js.undefined
     val timeout: js.UndefOr[Double] = js.undefined
-    val io: js.UndefOr[Any] = js.undefined
+    val io: js.UndefOr[IO] = js.undefined
+    val bindings : js.UndefOr[AbstractBinding] = js.undefined
   }
 
   def Board(option: BoardOption): Board = js.native
@@ -26,6 +25,7 @@ object JohnnyFive extends js.Object {
   @js.native
   class IO protected() extends js.Object {
     def reset(): js.Any = js.native
+    def pins():js.Array[Pin]= js.native
   }
 
   @js.native
@@ -273,7 +273,28 @@ object JohnnyFive extends js.Object {
     def speed(speed: js.Array[Double]): Unit = js.native
   }
 
+  trait BarometerOption extends js.Object {
+    var controller: js.UndefOr[String] = js.undefined
+    var address : js.UndefOr[Int] = js.undefined
+    var freq: js.UndefOr[Double] = js.undefined
+  }
 
+  def Barometer(option: BarometerOption): Barometer = js.native
+
+  @js.native
+  class Barometer protected() extends js.Object {
+    def this(option: BarometerOption) = this()
+
+    var id: String = js.native
+
+    def poressure: Double = js.native
+
+    def RH: Double = js.native
+
+    def on(event: String, cb: js.Function0[Unit]): this.type = js.native
+
+    def on(event: String, cb: js.Function1[js.Any, Unit]): this.type = js.native
+  }
   
   trait CompassOption extends js.Object {
     var controller: js.UndefOr[String] = js.undefined
@@ -408,6 +429,7 @@ object JohnnyFive extends js.Object {
 
   @js.native
   class Gyro protected() extends js.Object {
+
     def this(option: GyroGeneralOption | GyroAnalogOption | GyroMPU6050Option) = this()
 
     var id: String = js.native
@@ -452,14 +474,44 @@ object JohnnyFive extends js.Object {
 
     def relativeHumidity: Double = js.native
 
-    def RH: Double = js.native
+    def on(event: String, cb: js.Function0[Unit]): this.type = js.native
+
+    def on(event: String, cb: js.Function1[js.Any, Unit]): this.type = js.native
+  }
+
+
+
+  trait MultiOption extends js.Object {
+    var controller: js.UndefOr[String] = js.undefined
+    var freq: js.UndefOr[Double] = js.undefined
+  }
+
+
+  def Multi(option: MultiOption): Multi = js.native
+
+
+  @js.native
+  class Multi protected() extends js.Object {
+    def this(option: MultiOption ) = this()
+
+    def accelerometer: Accelerometer = js.native
+
+    def altimeter: Altimeter = js.native
+
+    def barometer: Barometer = js.native
+
+    def gyro: Gyro = js.native
+
+    def hygrometer : Hygrometer = js.native
+
+    def thermometer: Thermometer = js.native
 
     def on(event: String, cb: js.Function0[Unit]): this.type = js.native
 
     def on(event: String, cb: js.Function1[js.Any, Unit]): this.type = js.native
   }
 
-  
+
   trait IMUGeneralOption extends js.Object {
     var controller: js.UndefOr[String] = js.undefined
     var freq: js.UndefOr[Double] = js.undefined
